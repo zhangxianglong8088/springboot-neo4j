@@ -43,7 +43,6 @@ public class TestServiceController {
         Service performance = Service.builder().name("performance").build();
 
         List<Service> serviceList = Arrays.asList(accounting, calculate, book, settlement);
-
         serviceRepository.saveAll(serviceList);
 
         //calculate依赖accounting
