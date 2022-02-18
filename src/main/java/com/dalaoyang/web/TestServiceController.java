@@ -24,16 +24,7 @@ public class TestServiceController {
     @Resource
     private ServiceRepository serviceRepository;
 
-    /**
-     * CEO
-     * -设计部
-     * - 设计1组
-     * - 设计2组
-     * -技术部
-     * - 前端技术部
-     * - 后端技术部
-     * - 测试技术部
-     */
+
     @GetMapping("builder")
     public void create() {
         Service accounting = Service.builder().name("accounting").build();
