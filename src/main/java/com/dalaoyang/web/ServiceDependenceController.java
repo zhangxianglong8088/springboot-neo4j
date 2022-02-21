@@ -24,7 +24,9 @@ public class ServiceDependenceController {
     @Resource
     private ServiceRepository serviceRepository;
 
-
+    /**
+     * 初始化构建依赖关系
+     */
     @GetMapping("builder/services")
     public void create() {
         Service accounting = Service.builder().name("accounting").build();
@@ -62,6 +64,12 @@ public class ServiceDependenceController {
         followRepository.saveAll(relationShips);
     }
 
+    /**
+     * 通过参数查询各个服务之间的依赖关系
+     *
+     * @param name
+     * @return
+     */
     @GetMapping("query/indirectByFollowsByName")
     public List<Service> get(String name) {
         List<Service> list = serviceRepository.findIndirectByFollowsByName(name);
