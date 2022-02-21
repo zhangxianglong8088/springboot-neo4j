@@ -12,11 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author yyyangyang@didichuxing.com
+ * @author zhangxianglong
  * @date 2020-11-15
  */
 @RestController
-public class TestServiceController {
+public class ServiceDependenceController {
 
     @Resource
     private FollowRepository followRepository;
@@ -25,34 +25,39 @@ public class TestServiceController {
     private ServiceRepository serviceRepository;
 
 
-    @GetMapping("builder")
+    @GetMapping("builder/services")
     public void create() {
         Service accounting = Service.builder().name("accounting").build();
         Service calculate = Service.builder().name("calculate").build();
         Service book = Service.builder().name("book").build();
         Service settlement = Service.builder().name("settlement").build();
         Service performance = Service.builder().name("performance").build();
+        Service payment = Service.builder().name("payment").build();
 
-        List<Service> serviceList = Arrays.asList(accounting, calculate, book, settlement);
+        List<Service> serviceList = Arrays.asList(accounting, calculate, book, settlement, payment);
         serviceRepository.saveAll(serviceList);
 
         //calculate依赖accounting
-        Follow followCalculate = Follow.builder().startNode(calculate).endNode(accounting).build();
+        Follow calculateDepAccounting = Follow.builder().startNode(calculate).endNode(accounting).build();
         //book依赖accounting
-        Follow followBook = Follow.builder().startNode(book).endNode(accounting).build();
-        //settlement依赖book
-        Follow followSettlement = Follow.builder().startNode(settlement).endNode(book).build();
-        //performance依赖book
-        Follow followPerformance = Follow.builder().startNode(performance).endNode(book).build();
+        Follow bookDepAccounting = Follow.builder().startNode(book).endNode(accounting).build();
 
-        List<Follow> relationShips = Arrays.asList(followCalculate, followBook, followSettlement, followPerformance);
+        //accounting 依赖payment
+        Follow accountingDepPayment = Follow.builder().startNode(accounting).endNode(payment).build();
+
+        //performance依赖payment
+        Follow followPerformance = Follow.builder().startNode(performance).endNode(payment).build();
+
+        Follow settlementDepPayment=  Follow.builder().startNode(settlement).endNode(payment).build();
+
+        List<Follow> relationShips = Arrays.asList(calculateDepAccounting, bookDepAccounting, accountingDepPayment, followPerformance,settlementDepPayment);
 
         followRepository.saveAll(relationShips);
     }
 
-    @GetMapping("query/directByFollowsByName")
+    @GetMapping("query/indirectByFollowsByName")
     public List<Service> get(String name) {
-        List<Service> list = serviceRepository.findDirectByFollowsByName(name);
+        List<Service> list = serviceRepository.findIndirectByFollowsByName(name);
         return list;
     }
 }

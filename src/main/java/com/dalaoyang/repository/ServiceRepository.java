@@ -18,11 +18,21 @@ import java.util.List;
 public interface ServiceRepository extends Neo4jRepository<Service, Long> {
 
     /**
-     * 通过服务名称查询 依赖当前服务的服务列表
+     * 通过服务名称查询 直接依赖当前服务的服务列表
      *
      * @param serviceName
      * @return
      */
     @Query("MATCH(p:service)-[:follow]->(:service{name:$serviceName}) RETURN p")
-    List<Service> findByFollowsByName(@Param("serviceName") String serviceName);
+    List<Service> findDirectByFollowsByName(@Param("serviceName") String serviceName);
+
+
+    /**
+     * 通过服务名称查询 间接依赖当前服务的服务列表
+     *
+     * @param serviceName
+     * @return
+     */
+    @Query("MATCH n=(:service{name:$serviceName})-[*..6]-() return n")
+    List<Service> findIndirectByFollowsByName(@Param("serviceName") String serviceName);
 }
