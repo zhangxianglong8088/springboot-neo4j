@@ -34,6 +34,9 @@ public class ServiceDependenceController {
         Service performance = Service.builder().name("performance").build();
         Service payment = Service.builder().name("payment").build();
 
+        Service profit = Service.builder().name("profit").build();
+        Service sign = Service.builder().name("sign").build();
+
         List<Service> serviceList = Arrays.asList(accounting, calculate, book, settlement, payment);
         serviceRepository.saveAll(serviceList);
 
@@ -48,9 +51,13 @@ public class ServiceDependenceController {
         //performance依赖payment
         Follow followPerformance = Follow.builder().startNode(performance).endNode(payment).build();
 
-        Follow settlementDepPayment=  Follow.builder().startNode(settlement).endNode(payment).build();
+        Follow settlementDepPayment = Follow.builder().startNode(settlement).endNode(payment).build();
 
-        List<Follow> relationShips = Arrays.asList(calculateDepAccounting, bookDepAccounting, accountingDepPayment, followPerformance,settlementDepPayment);
+        //签约依赖profit
+
+        Follow signDepProfit = Follow.builder().startNode(sign).endNode(profit).build();
+
+        List<Follow> relationShips = Arrays.asList(calculateDepAccounting, bookDepAccounting, accountingDepPayment, followPerformance, settlementDepPayment, signDepProfit);
 
         followRepository.saveAll(relationShips);
     }
