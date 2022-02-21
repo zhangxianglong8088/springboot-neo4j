@@ -65,7 +65,7 @@ public class ServiceDependenceController {
     }
 
     /**
-     * 通过参数查询各个服务之间的依赖关系
+     * 查询和一个服务相关的所有服务
      *
      * @param name
      * @return
@@ -73,6 +73,18 @@ public class ServiceDependenceController {
     @GetMapping("query/indirectByFollowsByName")
     public List<Service> get(String name) {
         List<Service> list = serviceRepository.findIndirectByFollowsByName(name);
+        return list;
+    }
+
+    /**
+     * 输入一个服务名，查询和这个服务直接相关的服务
+     *
+     * @param name
+     * @return
+     */
+    @GetMapping("query/directByFollowsByName")
+    public List<Service> directByFollowsByName(String name) {
+        List<Service> list = serviceRepository.findDirectByFollowsByName(name);
         return list;
     }
 }
