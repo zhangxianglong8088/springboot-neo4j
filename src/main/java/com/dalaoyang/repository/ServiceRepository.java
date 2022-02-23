@@ -35,4 +35,14 @@ public interface ServiceRepository extends Neo4jRepository<Service, Long> {
      */
     @Query("MATCH n=(:service{name:$serviceName})-[*..6]-() return n")
     List<Service> findIndirectByFollowsByName(@Param("serviceName") String serviceName);
+
+
+    /**
+     * 通过服务名称查询 间接依赖当前服务的服务列表
+     *
+     * @param serviceName
+     * @return
+     */
+    @Query("MATCH a=(:service {name:$serviceName})-[r:被依赖*]->() RETURN nodes(a)")
+    List<Service> beDependedOns(@Param("serviceName") String serviceName);
 }

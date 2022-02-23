@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2020-11-15
  */
 @RestController
-public class ServiceDependenceController {
+public class ServiceDependenceController2 {
 
     @Resource
     private FollowRepository followRepository;
@@ -27,7 +27,7 @@ public class ServiceDependenceController {
     /**
      * 初始化构建依赖关系
      */
-    @GetMapping("builder/services")
+    @GetMapping("save/services")
     public void create() {
         Service accounting = Service.builder().name("accounting").build();
         Service calculate = Service.builder().name("calculate").build();
@@ -44,24 +44,24 @@ public class ServiceDependenceController {
         serviceRepository.saveAll(serviceList);
 
         //calculate依赖accounting
-        Follow calculateDepAccounting = Follow.builder().startNode(calculate).endNode(accounting).build();
+        Follow calculateDepAccounting = Follow.builder().startNode(accounting).endNode(calculate).build();
         //book依赖accounting
-        Follow bookDepAccounting = Follow.builder().startNode(book).endNode(accounting).build();
+        Follow bookDepAccounting = Follow.builder().startNode(accounting).endNode(book).build();
 
         //accounting 依赖payment
-        Follow accountingDepPayment = Follow.builder().startNode(accounting).endNode(payment).build();
+        Follow accountingDepPayment = Follow.builder().startNode(payment).endNode(accounting).build();
 
         //performance依赖payment
-        Follow followPerformance = Follow.builder().startNode(performance).endNode(payment).build();
+        Follow followPerformance = Follow.builder().startNode(payment).endNode(performance).build();
 
-        Follow settlementDepPayment = Follow.builder().startNode(settlement).endNode(payment).build();
+        Follow settlementDepPayment = Follow.builder().startNode(payment).endNode(settlement).build();
 
         //签约依赖profit
 
-        Follow signDepProfit = Follow.builder().startNode(sign).endNode(profit).build();
+        Follow signDepProfit = Follow.builder().startNode(profit).endNode(sign).build();
 
         //payment依赖 order
-        Follow paymentFollowOrder = Follow.builder().startNode(payment).endNode(order).build();
+        Follow paymentFollowOrder = Follow.builder().startNode(order).endNode(payment).build();
 
 
         List<Follow> relationShips = Arrays.asList(calculateDepAccounting, bookDepAccounting, accountingDepPayment,
@@ -71,26 +71,14 @@ public class ServiceDependenceController {
     }
 
     /**
-     * 查询和一个服务相关的所有服务
+     * 输入一个服务名，查询该服务的被依赖关系图
      *
      * @param name
      * @return
      */
-    @GetMapping("query/indirectByFollowsByName")
-    public List<Service> get(String name) {
-        List<Service> list = serviceRepository.findIndirectByFollowsByName(name);
-        return list;
-    }
-
-    /**
-     * 输入一个服务名，查询和这个服务直接相关的服务
-     *
-     * @param name
-     * @return
-     */
-    @GetMapping("query/directByFollowsByName")
+    @GetMapping("query/beDependedOns")
     public List<Service> directByFollowsByName(String name) {
-        List<Service> list = serviceRepository.findDirectByFollowsByName(name);
+        List<Service> list = serviceRepository.beDependedOns(name);
         return list;
     }
 }
