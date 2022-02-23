@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2020-11-15
  */
 @RestController
-public class ServiceDependenceController2 {
+public class ServiceDependencedController {
 
     @Resource
     private FollowRepository followRepository;
