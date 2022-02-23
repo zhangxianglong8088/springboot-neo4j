@@ -64,16 +64,17 @@ public class ServiceDependencedController {
         Follow paymentFollowOrder = Follow.builder().startNode(order).endNode(payment).build();
 
 
-        List<Follow> relationShips = Arrays.asList(calculateDepAccounting, bookDepAccounting, accountingDepPayment,
-                followPerformance, settlementDepPayment, signDepProfit,paymentFollowOrder);
+        List<Follow> relationShips = Arrays.asList(calculateDepAccounting, bookDepAccounting, accountingDepPayment, followPerformance, settlementDepPayment, signDepProfit, paymentFollowOrder);
 
         followRepository.saveAll(relationShips);
     }
 
     /**
      * 输入一个服务名，查询该服务的被依赖关系图
+     * http://localhost:8080/query/beDependedOns?name=order
      * http://localhost:8080/query/beDependedOns?name=payment
      * http://localhost:8080/query/beDependedOns?name=accounting
+     *
      * @param name
      * @return
      */
