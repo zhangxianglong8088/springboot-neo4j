@@ -72,7 +72,7 @@ public class ServiceDependencedController {
 
     /**
      * 输入一个服务名，查询该服务的被依赖关系图
-     *
+     * http://localhost:8080/query/beDependedOns?name=payment
      * @param name
      * @return
      */
