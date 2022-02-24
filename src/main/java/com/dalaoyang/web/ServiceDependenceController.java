@@ -64,33 +64,42 @@ public class ServiceDependenceController {
         Follow paymentFollowOrder = Follow.builder().startNode(payment).endNode(order).build();
 
 
-        List<Follow> relationShips = Arrays.asList(calculateDepAccounting, bookDepAccounting, accountingDepPayment,
-                followPerformance, settlementDepPayment, signDepProfit,paymentFollowOrder);
+        List<Follow> relationShips = Arrays.asList(calculateDepAccounting, bookDepAccounting, accountingDepPayment, followPerformance, settlementDepPayment, signDepProfit, paymentFollowOrder);
 
         followRepository.saveAll(relationShips);
     }
 
-    /**
-     * 查询和一个服务相关的所有服务
-     *
-     * @param name
-     * @return
-     */
-    @GetMapping("query/indirectByFollowsByName")
-    public List<Service> get(String name) {
-        List<Service> list = serviceRepository.findIndirectByFollowsByName(name);
-        return list;
-    }
+//    /**
+//     * 查询和一个服务相关的所有服务
+//     *
+//     * @param name
+//     * @return
+//     */
+//    @GetMapping("query/indirectByFollowsByName")
+//    public List<Service> get(String name) {
+//        List<Service> list = serviceRepository.findIndirectByFollowsByName(name);
+//        return list;
+//    }
+//
+//    /**
+//     * 输入一个服务名，查询和这个服务直接相关的服务
+//     *
+//     * @param name
+//     * @return
+//     */
+//    @GetMapping("query/directByFollowsByName")
+//    public List<Service> directByFollowsByName(String name) {
+//        List<Service> list = serviceRepository.findDirectByFollowsByName(name);
+//        return list;
+//    }
+
 
     /**
-     * 输入一个服务名，查询和这个服务直接相关的服务
-     *
      * @param name
      * @return
      */
-    @GetMapping("query/directByFollowsByName")
-    public List<Service> directByFollowsByName(String name) {
-        List<Service> list = serviceRepository.findDirectByFollowsByName(name);
-        return list;
+    @GetMapping("query/related")
+    public List<Service> related(String name) {
+        return serviceRepository.reverseDirection(name);
     }
 }
