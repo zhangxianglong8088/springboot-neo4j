@@ -10,7 +10,7 @@ import org.neo4j.ogm.annotation.*;
  * @author: zhangxianglong
  * @date: 2022/2/8
  */
-@RelationshipEntity(type = "被依赖")
+@RelationshipEntity(type = "follow")
 @Data
 @Builder
 public class Follow {
