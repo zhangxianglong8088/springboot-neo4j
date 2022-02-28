@@ -5,11 +5,14 @@ import com.dalaoyang.entity.Service;
 import com.dalaoyang.repository.FollowRepository;
 import com.dalaoyang.repository.ServiceRepository;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zhangxianglong
@@ -101,5 +104,17 @@ public class ServiceDependenceController {
     @GetMapping("query/related")
     public List<Service> related(String name) {
         return serviceRepository.reverseDirection(name);
+    }
+
+    /**
+     * @param name
+     * @return
+     */
+    @GetMapping("get")
+    public Map<String, Object> get(String name) {
+        Map<String, Object> retMap = new HashMap<>();
+        List<Service> nodeList = serviceRepository.reverseDirection(name);
+        retMap.put("nodeList", nodeList);
+        return retMap;
     }
 }
