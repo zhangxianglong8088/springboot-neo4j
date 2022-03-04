@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author zhangxianglong
@@ -97,6 +94,23 @@ public class ServiceDependenceController {
         return list;
     }
 
+
+    /**
+     * 输入一个服务名，查询和这个服务直接相关的服务
+     *
+     * @param name
+     * @return
+     */
+    @GetMapping("query/findAll")
+    public void findAll(String name) {
+        Iterable<Service> nodes = serviceRepository.findAll();
+        for (Service node : nodes) {
+            List<Follow> relationNodeSet = node.getFollows();
+            for (Follow relationNode : relationNodeSet) {
+                System.out.println("id:" + node.getId() + " name:" + node.getName() + " 关系：" + relationNode.getStartNode() + "子节点：" + relationNode.getEndNode());
+            }
+        }
+    }
 
     /**
      * @param name

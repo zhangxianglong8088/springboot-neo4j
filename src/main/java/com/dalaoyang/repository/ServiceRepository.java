@@ -23,7 +23,7 @@ public interface ServiceRepository extends Neo4jRepository<Service, Long> {
      * @param serviceName
      * @return
      */
-    @Query("MATCH(p:service)-[:follow]->(:service{name:$serviceName}) RETURN *")
+    @Query("MATCH(p:service)-[:follow]->(:service{name:$serviceName}) RETURN p")
     List<Service> findDirectByFollowsByName(@Param("serviceName") String serviceName);
 
 
